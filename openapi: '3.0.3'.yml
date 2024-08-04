@@ -1,0 +1,225 @@
+openapi: "3.0.3"
+info:
+  title: TEST BE
+  version: "1.0"
+servers:
+  - url: http://localhost:8000/api
+paths:
+  /order/create:
+    post:
+      tags:
+        - "orders"
+      description: "create new order"
+      summary: "create new order"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Create"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  data:
+                    $ref: "#/components/schemas/Responseorder"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Responsefailed"
+
+  /order/bill/{id}:
+    get:
+      tags:
+        - "orders"
+      summary: "get order by no meja"
+      description: "get order by no meja"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "meja id"
+          required: true
+          schema:
+            type: "number"
+
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  data:
+                    $ref: "#/components/schemas/Responsebill"
+
+components:
+  schemas:
+    Responsefailed:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Failed to create order
+
+    Responsebill:
+      type: object
+      properties:
+        bill:
+          type: object
+          properties:
+            products:
+              type: object
+              properties:
+                promo:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      nama:
+                        type: string
+                        example: Nasi Goreng + Jeruk Dingin
+                      harga:
+                        type: integer
+                        example: 23000
+                      jumlah:
+                        type: integer
+                        example: 2
+                      promo_id:
+                        type: integer
+                        example: 1
+                reguler:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      nama:
+                        type: string
+                        example: Jeruk Dingin
+                      harga:
+                        type: integer
+                        example: 12000
+                      jumlah:
+                        type: integer
+                        example: 1
+                      list_product_id:
+                        type: integer
+                        example: 1
+        keterangan:
+          type: string
+          example: Printer Kasir
+        total_harga:
+          type: integer
+          example: 87000
+        tatus_pembayaran:
+          type: string
+          example: pending
+        no_meja:
+          type: string
+          example: "1"
+
+    Responseorder:
+      type: object
+      properties:
+        order_id:
+          type: integer
+          example: 12
+        B:
+          type: object
+          properties:
+            keterangan:
+              type: string
+              example: Printer Dapur
+            products:
+              type: array
+              items:
+                type: object
+                properties:
+                  list_product_id:
+                    type: integer
+                    example: 8
+                  nama:
+                    type: string
+                    example: Mie Goreng
+                  jumlah:
+                    type: integer
+                    example: 1
+        C:
+          type: object
+          properties:
+            keterangan:
+              type: string
+              example: Printer Bar
+            products:
+              type: array
+              items:
+                type: object
+                properties:
+                  list_product_id:
+                    type: integer
+                    example: 1
+                  nama:
+                    type: string
+                    example: Jeruk Dingin
+                  jumlah:
+                    type: integer
+                    example: 1
+
+    Create:
+      type: "object"
+      properties:
+        reguler:
+          $ref: "#/components/schemas/reguler"
+        promo:
+          $ref: "#/components/schemas/promo"
+        meja:
+          type: "string"
+          example: "1"
+
+    reguler:
+      type: "object"
+      properties:
+        list_product_id:
+          type: integer
+        harga:
+          type: integer
+        jumlah:
+          type: integer
+      example:
+        - list_product_id: 1
+          harga: 12000
+          jumlah: 1
+        - list_product_id: 5
+          harga: 6000
+          jumlah: 1
+        - list_product_id: 3
+          harga: 8000
+          jumlah: 1
+        - list_product_id: 8
+          harga: 15000
+          jumlah: 1
+
+    promo:
+      type: "object"
+      properties:
+        promo_id:
+          type: integer
+        harga:
+          type: integer
+        jumlah:
+          type: integer
+
+      example:
+        - promo_id: 1
+          harga: 23000
+          jumlah: 2

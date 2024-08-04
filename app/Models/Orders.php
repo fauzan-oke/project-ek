@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ListProduct extends Model
+class Orders extends Model
 {
     use HasFactory;
-    protected $table = 'list_product';
+    protected $casts = [
+        'metadata' => 'array',
+    ];
 }
