@@ -62,6 +62,12 @@ paths:
                     type: "string"
                   data:
                     $ref: "#/components/schemas/Responsebill"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Responsefailed"
 
 components:
   schemas:
